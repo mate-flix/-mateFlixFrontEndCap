@@ -1,9 +1,9 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from './src/pages/auth/login'; // Update the path
-import SignUpScreen from './src/pages/auth/login'; // Update the path
-import WelcomeScreen from './src/pages/home'; // Update the path
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import LoginScreen from "./src/pages/auth/login"; // Update the path
+import SignUpScreen from "./src/pages/auth/login"; // Update the path
+import WelcomeScreen from "./src/pages/home"; // Update the path
 
 type RootStackParamList = {
   Login: undefined;
