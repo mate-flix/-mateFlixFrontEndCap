@@ -1,8 +1,9 @@
 {
   "expo": {
-    "name": "capstoneMateflixFrontend",
+    "name": "-mateFlixFrontEndCap",
     "slug": "capstoneMateflixFrontend",
     "version": "1.0.0",
+    "scheme": "mate-flix",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

@@ -130,7 +130,7 @@ const Goggle :React.FC = () => {
     <View style={styles.container}>
       {showUserData()}
       <Button 
-        title={auth ? "Get User Data": "Login"} 
+        title={auth ? "Get User Data": "Login with Goggle"} 
         onPress={auth ? getUserData : () => promptAsync({ showInRecents: true })}
       />
       {auth ? <Button title="Logout" onPress={logout} /> : undefined}
@@ -141,8 +141,7 @@ const Goggle :React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+   
     alignItems: 'center',
     justifyContent: 'center',
   },

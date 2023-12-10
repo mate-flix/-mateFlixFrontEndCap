@@ -1,28 +1,25 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from './src/pages/auth/login'; // Update the path
-import SignUpScreen from './src/pages/auth/login'; // Update the path
-import WelcomeScreen from './src/pages/home'; // Update the path
+import React from "react";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, View } from "react-native";
+import StackNavigator from "./stackNavigator";
+import { UserContext } from "./UserContext";
 
-type RootStackParamList = {
-  Login: undefined;
-  SignUp: undefined;
-  Welcome: undefined;
-};
-
-const Stack = createStackNavigator<RootStackParamList>();
-
-const App: React.FC = () => {
+export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <UserContext>
+        <StackNavigator />
+      </UserContext>
+      <StatusBar style="auto" />
+    </>
   );
-};
+}
 
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
