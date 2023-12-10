@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,11 +13,11 @@ import Input from '../../../components/input';
 import Button from '../../../components/button';
 import Goggle from '../../../components/goggle';
 
-
+// Define the navigation types
 type RootStackParamList = {
   Login: undefined;
   SignUp: undefined;
-  Welcome: undefined;
+  Main: undefined;
 };
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
@@ -27,24 +27,39 @@ const LoginScreen: React.FC = () => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation<LoginScreenNavigationProp>();
 
+  useEffect(() => {
+    // Check and auto-login when the component mounts
+    checkAndAutoLogin();
+  }, []);
+
   const checkAndAutoLogin = async () => {
     try {
-      const savedToken = await AsyncStorage.getItem('jwtToken');
+      const savedToken = await AsyncStorage.getItem('accessToken')
 
       if (savedToken) {
-        const decodedToken = decodeJWT(savedToken);
+        const isTokenValid = validateToken(savedToken);
 
-        const isTokenExpired = decodedToken.exp < Date.now() / 1000;
-
-        if (isTokenExpired) {
+        if (isTokenValid) {
+          navigation.navigate('Main');
+        } else {
           console.log('Token has expired');
           // Handle token expiration, e.g., perform logout
-        } else {
-          navigation.navigate('Welcome');
         }
       }
     } catch (error) {
       console.error('Error checking and auto login:', error);
+    }
+  };
+
+  const validateToken = (token: string) => {
+    try {
+      const decodedToken = decodeJWT(token);
+      const isTokenExpired = decodedToken.exp < Date.now() / 1000;
+
+      return !isTokenExpired;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return false;
     }
   };
 
@@ -62,8 +77,7 @@ const LoginScreen: React.FC = () => {
       return;
     }
 
-    // Replace the URL with your authentication API endpoint
-    const apiUrl = 'https://your-backend-api.com/login';
+    const apiUrl = 'https://a894-197-210-226-50.ngrok-free.app/login';
 
     try {
       const response = await fetch(apiUrl, {
@@ -76,11 +90,11 @@ const LoginScreen: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        const jwtToken = data.token;
+        const accessToken = data.accessToken;
 
-        await AsyncStorage.setItem('jwtToken', jwtToken);
+        await AsyncStorage.setItem('accessToken', accessToken);
 
-        navigation.navigate('Welcome');
+        navigation.navigate('Main');
       } else {
         const data = await response.json();
         Alert.alert('Error', data.message || 'Authentication failed.');
@@ -120,12 +134,9 @@ const LoginScreen: React.FC = () => {
       <TouchableOpacity onPress={navigateToSignUp}>
         <Text style={styles.joinText}>Join MateFlix</Text>
       </TouchableOpacity>
-  
+
       <Goggle/>
- 
     </View>
-    
-    
   );
 };
 
